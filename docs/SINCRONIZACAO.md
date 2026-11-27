@@ -1,6 +1,6 @@
 # Conta Frezzatech e sincronização opcional
 
-Estado: banco Supabase provisionado em São Paulo no plano gratuito. Migração aplicada; isolamento entre usuários e gravação por revisão testados em transação com rollback. Os 22 testes locais passaram. A configuração dos retornos de autenticação no painel e o teste real de cadastro/recuperação ainda estão pendentes; esta branch não foi liberada em produção. Nenhum dado financeiro pessoal foi enviado.
+Estado: versão 0.3 beta para testes pessoais. Banco provisionado em São Paulo no plano gratuito; retornos web e Android configurados. Os 22 testes locais e o build passaram. O teste real da API confirmou duas sessões da mesma conta, isolamento de outra conta e bloqueio de revisão antiga. Nenhum dado financeiro pessoal foi enviado.
 
 ## Fluxo do usuário
 
@@ -42,7 +42,7 @@ Estado: banco Supabase provisionado em São Paulo no plano gratuito. Migração 
 - Rede liberada somente para o host Supabase configurado; páginas externas não recebem a ponte nativa.
 - OAuth abre no navegador do sistema e retorna por deep link com PKCE.
 - Tokens e verificador PKCE usam Android Keystore/AES-GCM. Não há fallback para texto simples no Android.
-- O APK 0.2 entregue anteriormente continua sem sincronização. Esta branch não é uma atualização liberada.
+- O APK 0.2 continua sem sincronização. O APK 0.3 beta inclui o servidor configurado; a instalação e o fluxo completo ainda precisam de teste em aparelho físico.
 
 ## Validação
 
@@ -60,7 +60,7 @@ Antes de liberar: testar criação, confirmação, entrada/saída, recuperação
 - Verificação de segurança retornou lista de alertas vazia.
 - URL e chave publicável presentes em `config/cloud.public.json`. Chave publicável é própria para frontend; nenhuma chave secreta ou service_role está no código.
 
-## Ajuste pendente no painel
+## Retornos confirmados no painel
 
 Em Authentication → URL Configuration:
 
@@ -70,4 +70,12 @@ Em Authentication → URL Configuration:
 
 Manter confirmação de e-mail habilitada. Não habilitar Google antes de configurar e validar as credenciais OAuth do proprietário.
 
-O conector atual não possui operação para alterar a configuração de Auth. O acesso ao painel no navegador não foi concluído. Não liberar cadastro/recuperação antes de confirmar os retornos corretos.
+## Limite da versão de testes
+
+SMTP personalizado está desativado no painel. O envio padrão do Supabase atende somente endereços dos membros da equipe do projeto; cadastro público e recuperação de senha para terceiros não estão liberados. Documentação: https://supabase.com/docs/guides/auth/auth-smtp
+
+O proprietário escolheu preparar a versão de testes sem contratar domínio ou serviço de e-mail. A confirmação de e-mail permanece habilitada. Google permanece desativado. Não prometer cadastro público funcional nesta beta.
+
+Validação real da API: login por senha em duas sessões da mesma conta; carteira compartilhada; atualização de revisão 1 para 2; rejeição de revisão antiga; leitura e escrita por outra conta bloqueadas. Sessões de QA encerradas. A limpeza das duas contas sintéticas ainda está pendente porque a confirmação do conector expirou.
+
+Antes de oferecer a terceiros: configurar envio de e-mails, validar confirmação e recuperação ponta a ponta, testar APK em aparelho físico e revisar privacidade/distribuição comercial.
