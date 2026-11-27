@@ -17,7 +17,7 @@ function parseDate(x){x=String(x||'').trim();if(/^\d{2}\/\d{2}\/\d{4}$/.test(x))
 function amount(x){x=String(x).trim().replace('−','-');if(!/^-?\d+(?:[.,]\d{1,2})?$/.test(x))throw Error('Valor inválido. Use número decimal sem símbolo nem separador de milhar.');const negative=x.startsWith('-');x=x.replace(/^-/,'');if(/^0([.,]0{1,2})?$/.test(x))return 0;return F.money(x)*(negative?-1:1);}
 function decodeEntity(s){return s.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&apos;/g,"'");}
 async function parse(text,name){
- text=text.replace(/^\uFEFF/,'');if(text.trim().startsWith('{'))return validate(JSON.parse(text));
+ if(new TextEncoder().encode(text).length>4000000)throw Error('Arquivo maior que 4 MB. Divida em lotes.');text=text.replace(/^\uFEFF/,'');if(text.trim().startsWith('{'))return validate(JSON.parse(text));
  const records=[],counter=new Map();async function add(r,key){const n=(counter.get(key)||0)+1;counter.set(key,n);r.id=await digest(key+'|'+n);r.sourceFile=name;r.reviewRequired=true;records.push(r);}
  if(/<OFX[>\s]/i.test(text)){
  const card=/<CCSTMTRS>/i.test(text),tag=(s,k)=>decodeEntity((s.match(new RegExp('<'+k+'>\\s*([^<\\r\\n]+)','i'))||[])[1]?.trim()||'');
