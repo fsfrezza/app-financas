@@ -1,6 +1,6 @@
 # Frezzatech Finanças
 
-App para Android e navegador, com modo offline e sincronização opcional. Versão 0.5 beta para testes pessoais; ainda não é uma edição comercial.
+App para Android e navegador, com modo offline e sincronização opcional. Versão 0.6 beta para testes pessoais; ainda não é uma edição comercial.
 
 Web: https://fsfrezza.github.io/app-financas/web/
 
@@ -98,3 +98,11 @@ O orçamento acompanha o lote como modelo inativo. Rateio anual é provisão; n�
 Exportar histórico de conferência gera JSON portátil com todos os documentos e metadados. CSV financeiro exporta apenas os lançamentos já incluídos no controle. Backup completo inclui ambos e as regras de recorrência. O JSON de conferência não deve ser usado em Restaurar backup.
 
 Limites: arquivo de até 4 MB, perfil final até 4,8 MB para sincronização; importação adiciona sem substituir dados. Atualize todos os aparelhos para 0.5 antes de usar documentos importados, pois versões anteriores não sabem excluí-los dos saldos. Os dados financeiros particulares nunca integram o repositório público.
+
+## Lotes e períodos (0.6)
+
+Importação: escolha todos os meses do arquivo ou um intervalo (um mês usa início e fim iguais). A prévia separa novos, repetidos e divergentes. Meses existentes pedem confirmação para adicionar complementos, sem substituir dados. Mesmo identificador com conteúdo diferente fica fora da importação como divergência; o existente permanece intacto. Não se considera duplicidade apenas por mês/descrição/valor.
+
+Conferência: Lançar individualmente, Lançar selecionados ou Lançar todos do filtro. Selecionar todos abrange o filtro inteiro, além da página visível. Alterar o período limpa a seleção. O lote mostra conta, opção de categoria por sugestão ou fixa, quantidades e totais por mês antes da confirmação. Já lançados são ignorados. Valores zero, natureza ambígua, transferências bancárias, refinanciamentos, créditos de cartão e vencimentos provisórios ficam para revisão individual/conciliação. Pagamento e recebimento não são confirmados pelo lançamento em lote; datas passadas continuam em aberto.
+
+Exportação: documentos JSON por filtro ou selecionados; financeiro CSV por filtro; backup completo sempre contém todos os meses e regras. Orçamentos globais ficam fora de exportações parciais. CSV total é finito: inclui o histórico, parcelas salvas e até 12 meses à frente de recorrências, estendendo até a última parcela salva se posterior. Para exportar outro horizonte, use intervalo explícito. O backup JSON preserva as regras completas, sem tentar gerar infinitas ocorrências.
