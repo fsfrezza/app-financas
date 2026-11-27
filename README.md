@@ -1,6 +1,6 @@
 # Frezzatech Finanças
 
-App para Android e navegador, com modo offline e sincronização opcional. Versão 0.4 beta para testes pessoais; ainda não é uma edição comercial.
+App para Android e navegador, com modo offline e sincronização opcional. Versão 0.5 beta para testes pessoais; ainda não é uma edição comercial.
 
 Web: https://fsfrezza.github.io/app-financas/web/
 
@@ -86,3 +86,15 @@ Validação: 22 testes passaram, build web e APK concluídos, duas sessões da m
 - Transferências entre contas registram dois lados, sem inflar receitas e despesas. Para corrigir uma transferência, exclua o par e registre novamente.
 - Lembretes de entradas são opcionais por aparelho. Notificações Android carregam projeções de 12 meses, renovadas ao abrir/salvar/sincronizar o app; não há geração infinita em segundo plano.
 - O histórico e backups anteriores são preservados. Atualize todos os aparelhos para a 0.4 antes de usar recorrências: versões antigas não conhecem as novas regras. Backup JSON guarda regras; CSV expande ocorrências até o fim do mês selecionado (e inclui registros efetivos já salvos), sem criar infinitas linhas futuras.
+
+## Importar e conferir (0.5)
+
+A tela Importar e conferir aceita o JSON preparado a partir de planilhas, CSV do app, CSV de conta com Data/Valor/Descrição e OFX. PDF/XLSX devem ser convertidos antes. O arquivo é lido localmente, com prévia por mês e confirmação antes de adicionar. Reimportação do mesmo lote é reconhecida por IDs estáveis. CSV/OFX Nubank da mesma conta usam também identificador + data + valor/sinal para evitar repetição; não se deduplica somente por identificador.
+
+Todos os registros entram como documentos de conferência. Não alteram saldos, previsão, avisos nem totais financeiros. A origem, competência, datas, valores assinados e classificação sugerida são preservados. Registros elegíveis podem ser conferidos individualmente e incluídos no controle, escolhendo conta e categoria e confirmando eventual pagamento. Pagamentos de fatura, créditos e refinanciamentos permanecem documentais para evitar dupla contagem. Não há conciliação automática de cartões nem previsão de dívida com quitação confirmada nesta versão.
+
+O orçamento acompanha o lote como modelo inativo. Rateio anual é provisão; não cria cobrança mensal. Lançamentos de parcelas existentes são trazidos uma vez, sem gerar novamente o restante da série. A competência da fatura pode diferir do vencimento (por exemplo, ciclo de fevereiro com vencimento em março).
+
+Exportar histórico de conferência gera JSON portátil com todos os documentos e metadados. CSV financeiro exporta apenas os lançamentos já incluídos no controle. Backup completo inclui ambos e as regras de recorrência. O JSON de conferência não deve ser usado em Restaurar backup.
+
+Limites: arquivo de até 4 MB, perfil final até 4,8 MB para sincronização; importação adiciona sem substituir dados. Atualize todos os aparelhos para 0.5 antes de usar documentos importados, pois versões anteriores não sabem excluí-los dos saldos. Os dados financeiros particulares nunca integram o repositório público.

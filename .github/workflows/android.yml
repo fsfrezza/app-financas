@@ -1,7 +1,7 @@
 name: Android APK e testes
 on:
   push:
-    branches: [main, feature/account-sync, feature/financial-planning]
+    branches: [main, feature/account-sync, feature/financial-planning, feature/import-review]
   workflow_dispatch:
 permissions:
   contents: read
