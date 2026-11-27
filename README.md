@@ -69,4 +69,4 @@ Novo logo Frezzatech com fundo transparente. Em **Configurações → Aparência
 
 ## Sincronização em desenvolvimento
 
-A branch `feature/account-sync` prepara contas próprias Frezzatech e sincronização opcional via Supabase. O serviço ainda não foi conectado nem validado com usuários reais. Consulte [docs/SINCRONIZACAO.md](docs/SINCRONIZACAO.md). A versão 0.2 publicada continua offline.
+A branch `feature/account-sync` prepara contas próprias Frezzatech e sincronização opcional via Supabase. O banco já foi criado e teve o isolamento entre usuários testado. Ainda falta configurar os retornos de autenticação e validar cadastro/recuperação; a branch não foi liberada para uso. Consulte [docs/SINCRONIZACAO.md](docs/SINCRONIZACAO.md). A versão 0.2 publicada continua offline.

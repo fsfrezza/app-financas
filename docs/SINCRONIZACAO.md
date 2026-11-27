@@ -1,6 +1,6 @@
 # Conta Frezzatech e sincronização opcional
 
-Estado: implementação em desenvolvimento; backend ainda não conectado/provisionado. Nada foi enviado para um banco online. Não confundir testes locais com sincronização real.
+Estado: banco Supabase provisionado em São Paulo no plano gratuito. Migração aplicada; isolamento entre usuários e gravação por revisão testados em transação com rollback. Os 22 testes locais passaram. A configuração dos retornos de autenticação no painel e o teste real de cadastro/recuperação ainda estão pendentes; esta branch não foi liberada em produção. Nenhum dado financeiro pessoal foi enviado.
 
 ## Fluxo do usuário
 
@@ -49,3 +49,25 @@ Estado: implementação em desenvolvimento; backend ainda não conectado/provisi
 Executar `npm ci`, `npm test`, `npm run build`. A configuração ausente deixa a sincronização claramente indisponível e preserva o modo offline.
 
 Antes de liberar: testar criação, confirmação, entrada/saída, recuperação, troca de senha, dois usuários isolados, dois aparelhos, sessão expirada, alterações concorrentes, exclusões offline, falha de rede e restauração de backup. Testes unitários não substituem essa validação.
+
+## Projeto provisionado
+
+- Projeto: `mhvhorlmcjsfcpihtmup` — Frezzatech Financas.
+- Organização: fsfrezza's Org; região: sa-east-1 (São Paulo).
+- Custo consultado de criação: US$ 0/mês no plano atual.
+- Migração `finance_sync` aplicada. Função privilegiada em schema privado, wrapper invoker público; acesso anônimo negado.
+- Testes SQL com dois usuários simulados: isolamento de leitura, rejeição de escrita em outro usuário, bloqueio de escrita direta e controle de revisão. Transação desfeita; zero contas de teste restantes.
+- Verificação de segurança retornou lista de alertas vazia.
+- URL e chave publicável presentes em `config/cloud.public.json`. Chave publicável é própria para frontend; nenhuma chave secreta ou service_role está no código.
+
+## Ajuste pendente no painel
+
+Em Authentication → URL Configuration:
+
+- Site URL: `https://fsfrezza.github.io/app-financas/web/`
+- Redirect URLs: `https://fsfrezza.github.io/app-financas/web/`
+- Redirect URLs: `br.com.frezzatech.financas://auth/callback`
+
+Manter confirmação de e-mail habilitada. Não habilitar Google antes de configurar e validar as credenciais OAuth do proprietário.
+
+O conector atual não possui operação para alterar a configuração de Auth. O acesso ao painel no navegador não foi concluído. Não liberar cadastro/recuperação antes de confirmar os retornos corretos.
