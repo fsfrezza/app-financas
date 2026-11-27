@@ -76,6 +76,9 @@ SMTP personalizado está desativado no painel. O envio padrão do Supabase atend
 
 O proprietário escolheu preparar a versão de testes sem contratar domínio ou serviço de e-mail. A confirmação de e-mail permanece habilitada. Google permanece desativado. Não prometer cadastro público funcional nesta beta.
 
-Validação real da API: login por senha em duas sessões da mesma conta; carteira compartilhada; atualização de revisão 1 para 2; rejeição de revisão antiga; leitura e escrita por outra conta bloqueadas. Sessões de QA encerradas. A limpeza das duas contas sintéticas ainda está pendente porque a confirmação do conector expirou.
+Validação real da API: login por senha em duas sessões da mesma conta; carteira compartilhada; atualização de revisão 1 para 2; rejeição de revisão antiga; leitura e escrita por outra conta bloqueadas. Sessões de QA encerradas. As duas contas sintéticas foram removidas; consulta posterior confirmou zero contas de QA restantes.
 
 Antes de oferecer a terceiros: configurar envio de e-mails, validar confirmação e recuperação ponta a ponta, testar APK em aparelho físico e revisar privacidade/distribuição comercial.
+
+Publicação beta confirmada em https://fsfrezza.github.io/app-financas/web/ — tela Conta e sincronização inspecionada. O APK da mesma base de código foi compilado no run 45927421746. A distribuição comercial e o cadastro público seguem pendentes.
+
