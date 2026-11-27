@@ -1,6 +1,8 @@
 # Frezzatech Finanças
 
-App pessoal offline para Android e navegador. Versão 0.2.0, em validação: ainda não é uma edição comercial.
+App para Android e navegador, com modo offline e sincronização opcional. Versão 0.3 beta para testes pessoais; ainda não é uma edição comercial.
+
+Web: https://fsfrezza.github.io/app-financas/web/
 
 ## Android primeiro
 
@@ -23,11 +25,11 @@ Esse APK é de teste e usa assinatura de depuração. Não publique na Play Stor
 
 ## Privacidade e dados
 
-Dados no armazenamento local do aparelho/navegador. Não há banco remoto, login, integração bancária, publicidade, telemetria ou sincronização. O Android não solicita internet. Os backups JSON/CSV não são criptografados; guarde-os em local privado. Desinstalar, limpar dados ou trocar de navegador pode apagar o histórico. O código no GitHub não contém dados financeiros.
+Sem conta, os dados ficam no aparelho/navegador. A conta Frezzatech usa Supabase; somente ao ativar a sincronização os dados financeiros são enviados ao servidor, com acesso restrito ao proprietário. O Android solicita internet para autenticação e sincronização. Não há integração bancária, publicidade ou telemetria. Os backups JSON/CSV não são criptografados; guarde-os em local privado. Desinstalar, limpar dados ou trocar de navegador pode apagar o histórico. O código no GitHub não contém dados financeiros.
 
 ## Desenvolvimento
 
-Requisitos web: Node 20+; nenhum pacote de terceiros em runtime.
+Requisitos web: Node 20+. O cliente Supabase é empacotado no build. Execute `npm ci` antes de construir.
 
 ```sh
 npm test
@@ -57,7 +59,7 @@ A saída é `android/app/build/outputs/apk/debug/app-debug.apk`.
 
 1. Validar APK e entrega de notificações em aparelho real.
 2. Assinatura estável de produção e atualizações sem perda dos dados.
-3. Definir contas online, autenticação, sincronização e isolamento por usuário, caso desejados.
+3. Configurar envio de e-mails e validar cadastro, confirmação e recuperação; sincronização e isolamento já foram implementados e testados na API.
 4. Recorrências, cartões/faturas, orçamentos e importação de extratos como módulos futuros; ainda não implementados.
 5. Acessibilidade, revisão de segurança, documentação de privacidade e publicação em loja.
 
@@ -67,6 +69,11 @@ Não existe estimativa confiável de percentual do produto comercial antes de fe
 
 Novo logo Frezzatech com fundo transparente. Em **Configurações → Aparência**, escolha **Claro** ou **Escuro**. A preferência fica salva neste aparelho e não altera os dados financeiros. O logo se adapta ao fundo. O APK de teste ainda pode exigir reinstalação caso a assinatura do build anterior seja diferente; exporte um backup antes de remover qualquer versão.
 
-## Sincronização em desenvolvimento
+## Sincronização na beta 0.3
 
-A branch `feature/account-sync` prepara contas próprias Frezzatech e sincronização opcional via Supabase. O banco já foi criado e teve o isolamento entre usuários testado. Ainda falta configurar os retornos de autenticação e validar cadastro/recuperação; a branch não foi liberada para uso. Consulte [docs/SINCRONIZACAO.md](docs/SINCRONIZACAO.md). A versão 0.2 publicada continua offline.
+Conta própria por e-mail e senha; Google permanece desativado. Login sozinho não envia lançamentos: ative a sincronização na tela Conta. Em outro aparelho com dados online, use Baixar dados da conta. Dados antigos sem conta continuam separados; exporte backup antes de copiar ou substituir dados.
+
+O envio padrão de e-mails do Supabase é restrito aos membros da equipe do projeto. Sem SMTP próprio, esta beta não oferece cadastro público ou recuperação para terceiros. A confirmação de e-mail permanece habilitada. Consulte [docs/SINCRONIZACAO.md](docs/SINCRONIZACAO.md).
+
+Validação: 22 testes passaram, build web e APK concluídos, duas sessões da mesma conta compartilharam a carteira e outra conta não teve acesso. Falta validar instalação em aparelho físico e os fluxos de e-mail ponta a ponta.
+
