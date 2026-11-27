@@ -66,3 +66,7 @@ Não existe estimativa confiável de percentual do produto comercial antes de fe
 ## Aparência (0.2)
 
 Novo logo Frezzatech com fundo transparente. Em **Configurações → Aparência**, escolha **Claro** ou **Escuro**. A preferência fica salva neste aparelho e não altera os dados financeiros. O logo se adapta ao fundo. O APK de teste ainda pode exigir reinstalação caso a assinatura do build anterior seja diferente; exporte um backup antes de remover qualquer versão.
+
+## Sincronização em desenvolvimento
+
+A branch `feature/account-sync` prepara contas próprias Frezzatech e sincronização opcional via Supabase. O serviço ainda não foi conectado nem validado com usuários reais. Consulte [docs/SINCRONIZACAO.md](docs/SINCRONIZACAO.md). A versão 0.2 publicada continua offline.

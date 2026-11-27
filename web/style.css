@@ -48,3 +48,5 @@ html[data-theme=dark] .bar-meter::-webkit-meter-bar{background:#29413d}html[data
 html[data-theme=dark] #toast{background:#c5e8d2;color:#102a22}
 @media(max-width:900px) and (min-width:601px){.brand .brand-logo,.brand .product-name{display:none}.brand-mark{display:block;width:50px;height:50px;background:currentColor;mask:url('brand/frezzatech-transparent.png') 0 center / 180px auto no-repeat;-webkit-mask:url('brand/frezzatech-transparent.png') 0 center / 180px auto no-repeat}.brand{align-items:center}}
 @media(max-width:600px){.brand{display:none}.mobile-brand{display:flex}.sidebar{border-right:0}.topbar{padding:0 14px}.topbar>div{gap:0}.mobile-brand .brand-logo{width:160px}.mobile-brand b{font-size:9px;letter-spacing:1px}.avatar{display:none}footer{display:none}.theme-option{min-width:135px;flex:1;padding:12px}}
+
+.auth-panel{max-width:650px}.google-signin{margin-top:20px}.auth-panel .notice{margin-top:24px}button:disabled{cursor:wait;opacity:.6}@media(max-width:600px){nav button{font-size:8px;max-width:15%;overflow:hidden}nav button span{font-size:20px}}

@@ -7,3 +7,5 @@ android/**/build/
 *.jks
 .env*
 .DS_Store
+
+web/js/cloud.js
