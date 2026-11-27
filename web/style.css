@@ -50,3 +50,5 @@ html[data-theme=dark] #toast{background:#c5e8d2;color:#102a22}
 @media(max-width:600px){.brand{display:none}.mobile-brand{display:flex}.sidebar{border-right:0}.topbar{padding:0 14px}.topbar>div{gap:0}.mobile-brand .brand-logo{width:160px}.mobile-brand b{font-size:9px;letter-spacing:1px}.avatar{display:none}footer{display:none}.theme-option{min-width:135px;flex:1;padding:12px}}
 
 .auth-panel{max-width:650px}.google-signin{margin-top:20px}.auth-panel .notice{margin-top:24px}button:disabled{cursor:wait;opacity:.6}@media(max-width:600px){nav button{font-size:8px;max-width:15%;overflow:hidden}nav button span{font-size:20px}}
+
+[hidden]{display:none!important} details{margin:16px 0} summary{cursor:pointer;padding:12px 0;font-weight:600} details[open] summary{margin-bottom:8px} #settleDialog{max-width:480px} .dialog-heading h2{margin:0}

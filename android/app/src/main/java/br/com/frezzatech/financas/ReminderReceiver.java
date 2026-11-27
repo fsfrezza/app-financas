@@ -19,13 +19,13 @@ public class ReminderReceiver extends BroadcastReceiver {
     }
     public static String reminderBody(JSONObject s,LocalDate now)throws Exception {
         JSONObject settings=s.optJSONObject("settings");if(settings==null||!settings.optBoolean("notifications"))return null;
-        int overdue=0,soon=0,supplies=0,lead=settings.optInt("leadDays",3);
+        int overdue=0,soon=0,income=0,supplies=0,lead=settings.optInt("leadDays",3);
         JSONArray tx=s.optJSONArray("transactions");
-        if(tx!=null)for(int i=0;i<tx.length();i++){JSONObject t=tx.getJSONObject(i);if(!"expense".equals(t.optString("type"))||!t.isNull("paidDate")&&!t.optString("paidDate").isEmpty())continue;LocalDate due=LocalDate.parse(t.getString("dueDate"));long days=ChronoUnit.DAYS.between(now,due);if(days<0)overdue++;else if(days<=lead)soon++;}
+        if(tx!=null)for(int i=0;i<tx.length();i++){JSONObject t=tx.getJSONObject(i);if(!t.isNull("paidDate")&&!t.optString("paidDate").isEmpty()||t.has("transferId"))continue;if("income".equals(t.optString("type"))){if(settings.optBoolean("incomeReminders",false)&&ChronoUnit.DAYS.between(now,LocalDate.parse(t.getString("dueDate")))<=lead)income++;continue;}LocalDate due=LocalDate.parse(t.getString("dueDate"));long days=ChronoUnit.DAYS.between(now,due);if(days<0)overdue++;else if(days<=lead)soon++;}
         JSONArray items=s.optJSONArray("consumables");
         if(items!=null)for(int i=0;i<items.length();i++){JSONObject item=items.getJSONObject(i);JSONArray records=item.getJSONArray("records");if(records.length()==0)continue;java.util.List<LocalDate> dates=new java.util.ArrayList<>();for(int j=0;j<records.length();j++)dates.add(LocalDate.parse(records.getString(j)));java.util.Collections.sort(dates);long average=dates.size()>1?Math.round((double)ChronoUnit.DAYS.between(dates.get(0),dates.get(dates.size()-1))/(dates.size()-1)):item.optInt("initialDays",60);LocalDate next=dates.get(dates.size()-1).plusDays(average);if(ChronoUnit.DAYS.between(now,next)<=item.optInt("leadDays",7))supplies++;}
-        if(overdue+soon+supplies==0)return null;
-        return overdue+" vencida(s), "+soon+" próxima(s) do vencimento e "+supplies+" reposição(ões) estimada(s). Abra o app para conferir.";
+        if(overdue+soon+income+supplies==0)return null;
+        return overdue+" vencida(s), "+soon+" próxima(s) do vencimento, "+income+" entrada(s) prevista(s)/atrasada(s) e "+supplies+" reposição(ões) estimada(s). Abra o app para conferir.";
     }
     @Override public void onReceive(Context c,Intent intent){
         try{String text=reminderBody(data(c),LocalDate.now());NotificationManager manager=c.getSystemService(NotificationManager.class);
