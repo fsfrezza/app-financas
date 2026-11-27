@@ -25,9 +25,16 @@ import java.nio.charset.StandardCharsets;
 public class MainActivity extends Activity {
     private WebView web;
     private String exportContent;
+    private String cloudHost="",pendingAuthCallback;
     private static final String ORIGIN="https://app.frezzatech.local/";
     @Override public void onCreate(Bundle saved) {
         super.onCreate(saved);
+        try(InputStream in=getAssets().open("cloud-public.json")){
+            java.io.ByteArrayOutputStream bytes=new java.io.ByteArrayOutputStream();byte[] buffer=new byte[4096];int n;while((n=in.read(buffer))!=-1)bytes.write(buffer,0,n);String json=bytes.toString("UTF-8");
+            JSONObject config=new JSONObject(json);Uri uri=Uri.parse(config.optString("supabaseUrl"));
+            String host=uri.getHost();if("https".equals(uri.getScheme())&&host!=null&&host.matches("[a-z0-9-]+\\.supabase\\.co"))cloudHost=host;
+        }catch(Exception ignored){}
+        captureAuthIntent(getIntent());
         getWindow().setStatusBarColor(Color.rgb(16,42,44));
         getWindow().setNavigationBarColor(Color.WHITE);
         web=new WebView(this);
@@ -40,9 +47,11 @@ public class MainActivity extends Activity {
         web.addJavascriptInterface(new Bridge(),"FrezzaNative");
         web.setWebChromeClient(new WebChromeClient());
         web.setWebViewClient(new WebViewClient(){
+            @Override public void onPageFinished(WebView v,String url){if(ORIGIN.equals(url))deliverAuthCallback();}
             @Override public boolean shouldOverrideUrlLoading(WebView v,WebResourceRequest r){return !r.getUrl().toString().startsWith(ORIGIN);}
             @Override public WebResourceResponse shouldInterceptRequest(WebView v,WebResourceRequest r){
                 Uri uri=r.getUrl();
+                if("https".equals(uri.getScheme())&&!cloudHost.isEmpty()&&cloudHost.equals(uri.getHost()))return null;
                 if(!"https".equals(uri.getScheme())||!"app.frezzatech.local".equals(uri.getHost()))return blocked();
                 String path=uri.getPath();
                 if(path==null||path.contains(".."))return blocked();
@@ -65,7 +74,22 @@ public class MainActivity extends Activity {
     @Override public void onBackPressed(){web.evaluateJavascript("(()=>{const d=document.querySelector('dialog[open]');if(d){d.close();return true;}return false;})()",result->{if(!"true".equals(result))super.onBackPressed();});}
     @Override protected void onResume(){super.onResume();if(web!=null)web.evaluateJavascript("window.frezzaPermissionChanged&&window.frezzaPermissionChanged()",null);}
     private void message(String text){runOnUiThread(()->Toast.makeText(this,text,Toast.LENGTH_LONG).show());}
+    private void captureAuthIntent(Intent intent){
+        Uri uri=intent==null?null:intent.getData();
+        if(uri!=null&&"br.com.frezzatech.financas".equals(uri.getScheme())&&"auth".equals(uri.getHost())&&"/callback".equals(uri.getPath()))pendingAuthCallback=uri.toString();
+    }
+    private void deliverAuthCallback(){if(web!=null&&pendingAuthCallback!=null){String callback=pendingAuthCallback;pendingAuthCallback=null;web.evaluateJavascript("window.frezzaAuthCallback&&window.frezzaAuthCallback("+JSONObject.quote(callback)+")",null);}}
+    @Override protected void onNewIntent(Intent intent){super.onNewIntent(intent);setIntent(intent);captureAuthIntent(intent);deliverAuthCallback();}
     public class Bridge {
+        @JavascriptInterface public void openAuth(String url){
+            Uri uri=Uri.parse(url);
+            if(!"https".equals(uri.getScheme())||cloudHost.isEmpty()||!cloudHost.equals(uri.getHost())||!"/auth/v1/authorize".equals(uri.getPath()))return;
+            runOnUiThread(()->{try{startActivity(new Intent(Intent.ACTION_VIEW,uri));}catch(Exception ex){message("Não foi possível abrir o navegador para autenticação.");}});
+        }
+        @JavascriptInterface public String authGet(String key){return AuthStorage.get(MainActivity.this,key);}
+        @JavascriptInterface public void authSet(String key,String value){AuthStorage.set(MainActivity.this,key,value);}
+        @JavascriptInterface public void authRemove(String key){AuthStorage.remove(MainActivity.this,key);}
+
         @JavascriptInterface public void setTheme(String mode){
             final boolean dark="dark".equals(mode);
             runOnUiThread(()->{

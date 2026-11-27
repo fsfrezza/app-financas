@@ -1,0 +1,6 @@
+{
+  "supabaseUrl": "https://YOUR_PROJECT.supabase.co",
+  "publishableKey": "YOUR_PUBLIC_PUBLISHABLE_KEY",
+  "googleEnabled": false,
+  "webRedirectUrl": "https://fsfrezza.github.io/app-financas/web/"
+}

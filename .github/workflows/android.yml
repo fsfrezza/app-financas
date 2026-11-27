@@ -1,7 +1,7 @@
 name: Android APK e testes
 on:
   push:
-    branches: [main]
+    branches: [main, feature/account-sync]
   workflow_dispatch:
 permissions:
   contents: read
@@ -13,6 +13,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - run: npm ci
       - run: npm test
       - run: npm run build
   android:
@@ -30,6 +31,11 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: npm run build
       - run: gradle -p android assembleDebug --no-daemon
       - uses: actions/upload-artifact@v4
         with:

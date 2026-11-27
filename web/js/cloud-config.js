@@ -1,0 +1,1 @@
+window.FrezzaCloudConfig=Object.freeze({"supabaseUrl":"https://mhvhorlmcjsfcpihtmup.supabase.co","publishableKey":"sb_publishable_yPDJer3UpehWu3sU4Ru_mQ_GTrjtrhf","googleEnabled":false,"webRedirectUrl":"https://fsfrezza.github.io/app-financas/web/","enabled":true});
