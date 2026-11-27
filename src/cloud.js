@@ -71,7 +71,7 @@ const api={
  async signOut(){activation++;clearTimeout(timer);const {error}=await requireClient().auth.signOut({scope:'local'});if(error)throw error;await activate(null);},
  changed(){clearTimeout(timer);timer=setTimeout(sync,1500);},
  sync,
- async start(){if(!client){notify();return;}const {data,error}=await client.auth.getSession();if(error)lastError=errorText(error);else await activate(data.session?.user||null);client.auth.onAuthStateChange((event,session)=>{setTimeout(()=>{if(session?.user?.id!==user?.id)activate(session?.user||null);},0);});window.addEventListener('online',sync);document.addEventListener('visibilitychange',()=>{if(!document.hidden)sync();});setInterval(()=>{if(!document.hidden)sync();},60000);notify();}
+ async start(){if(!client){notify();return;}const {data,error}=await client.auth.getSession();if(error)lastError=errorText(error);else if(data.session?.user)await activate(data.session.user);else if(navigator.onLine||!window.FinanceApp.account())await activate(null);client.auth.onAuthStateChange((event,session)=>{setTimeout(()=>{if(event==='SIGNED_OUT'&&!navigator.onLine){user=null;notify();return;}if(session?.user?.id!==user?.id)activate(session?.user||null);},0);});window.addEventListener('online',sync);document.addEventListener('visibilitychange',()=>{if(!document.hidden)sync();});setInterval(()=>{if(!document.hidden)sync();},60000);notify();}
 };
 window.FrezzaCloud=api;
 window.frezzaAuthCallback=url=>api.callback(url).catch(err=>{lastError=errorText(err);notify();});
