@@ -66,6 +66,17 @@ public class MainActivity extends Activity {
     @Override protected void onResume(){super.onResume();if(web!=null)web.evaluateJavascript("window.frezzaPermissionChanged&&window.frezzaPermissionChanged()",null);}
     private void message(String text){runOnUiThread(()->Toast.makeText(this,text,Toast.LENGTH_LONG).show());}
     public class Bridge {
+        @JavascriptInterface public void setTheme(String mode){
+            final boolean dark="dark".equals(mode);
+            runOnUiThread(()->{
+                int background=dark?Color.rgb(11,23,32):Color.rgb(244,247,246);
+                web.setBackgroundColor(background);
+                getWindow().setStatusBarColor(background);
+                getWindow().setNavigationBarColor(background);
+                int flags=dark?0:android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR|android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+                getWindow().getDecorView().setSystemUiVisibility(flags);
+            });
+        }
         @JavascriptInterface public void sync(String json){
             if(json.length()>10000000)return;
             try{JSONObject s=new JSONObject(json);if(s.getInt("version")!=1)return;getSharedPreferences("finance",MODE_PRIVATE).edit().putString("reminders",json).apply();ReminderReceiver.schedule(MainActivity.this);}catch(Exception ignored){}

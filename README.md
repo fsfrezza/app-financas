@@ -1,6 +1,6 @@
 # Frezzatech Finanças
 
-App pessoal offline para Android e navegador. Versão 0.1.0, em validação: ainda não é uma edição comercial.
+App pessoal offline para Android e navegador. Versão 0.2.0, em validação: ainda não é uma edição comercial.
 
 ## Android primeiro
 
@@ -62,3 +62,7 @@ A saída é `android/app/build/outputs/apk/debug/app-debug.apk`.
 5. Acessibilidade, revisão de segurança, documentação de privacidade e publicação em loja.
 
 Não existe estimativa confiável de percentual do produto comercial antes de fechar esse escopo.
+
+## Aparência (0.2)
+
+Novo logo Frezzatech com fundo transparente. Em **Configurações → Aparência**, escolha **Claro** ou **Escuro**. A preferência fica salva neste aparelho e não altera os dados financeiros. O logo se adapta ao fundo. O APK de teste ainda pode exigir reinstalação caso a assinatura do build anterior seja diferente; exporte um backup antes de remover qualquer versão.
