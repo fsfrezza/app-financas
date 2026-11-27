@@ -19,7 +19,10 @@ grant select on public.finance_vaults to authenticated;
 create policy vault_owner_read on public.finance_vaults for select to authenticated using ((select auth.uid()) = user_id);
 -- The only write path is a revision-checked operation. The authenticated user ID
 -- comes from the session; the client cannot choose the owner of a vault.
-create function public.save_finance_vault(expected_revision bigint, next_payload jsonb, expected_user uuid)
+create schema if not exists private;
+revoke all on schema private from public;
+grant usage on schema private to authenticated;
+create function private.save_finance_vault(expected_revision bigint, next_payload jsonb, expected_user uuid)
 returns table(revision bigint, payload jsonb, updated_at timestamptz)
 language plpgsql security definer set search_path = '' as $$
 declare uid uuid := auth.uid();
@@ -40,6 +43,16 @@ begin
   -- Zero rows mean a competing device has already written. Clients must fetch
   -- and merge again, never repeat an unconditional update.
 end;
+$$;
+revoke all on function private.save_finance_vault(bigint,jsonb,uuid) from public,anon;
+grant execute on function private.save_finance_vault(bigint,jsonb,uuid) to authenticated;
+
+-- Expose only an invoker wrapper through the REST API; privileged SQL is kept
+-- in a schema that is not exposed. The inner function always verifies auth.uid.
+create function public.save_finance_vault(expected_revision bigint, next_payload jsonb, expected_user uuid)
+returns table(revision bigint,payload jsonb,updated_at timestamptz)
+language sql security invoker set search_path = '' as $$
+  select * from private.save_finance_vault(expected_revision,next_payload,expected_user);
 $$;
 revoke all on function public.save_finance_vault(bigint,jsonb,uuid) from public,anon;
 grant execute on function public.save_finance_vault(bigint,jsonb,uuid) to authenticated;
