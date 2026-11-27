@@ -1,6 +1,6 @@
 # Frezzatech Finanças
 
-App para Android e navegador, com modo offline e sincronização opcional. Versão 0.3 beta para testes pessoais; ainda não é uma edição comercial.
+App para Android e navegador, com modo offline e sincronização opcional. Versão 0.4 beta para testes pessoais; ainda não é uma edição comercial.
 
 Web: https://fsfrezza.github.io/app-financas/web/
 
@@ -77,3 +77,12 @@ O envio padrão de e-mails do Supabase é restrito aos membros da equipe do proj
 
 Validação: 22 testes passaram, build web e APK concluídos, duas sessões da mesma conta compartilharam a carteira e outra conta não teve acesso. Falta validar instalação em aparelho físico e os fluxos de e-mail ponta a ponta.
 
+## Planejamento financeiro (0.4)
+
+- Formulário adaptado para entradas e saídas, com datas de recebimento/pagamento e detalhes recolhíveis. Categorias podem pertencer a entradas, saídas ou ambas; categorias antigas continuam disponíveis até reclassificação.
+- Uma vez, mensal até encerrar, ou parcelado. Na criação das parcelas, escolha total ou valor de cada parcela. Mensal mantém o valor, não divide.
+- Mensal fixo, estimado ou a informar; repetição automática sempre em aberto. Pular mês, pausar com mês de retomada, encerrar e alterar este mês ou este e os próximos em aberto. Mudanças futuras de valor/categoria/conta são suportadas; para mudar data de vencimento, edite cada ocorrência ou encerre e cadastre uma nova regra.
+- Saldo real hoje separado de previsão ao fim do mês consultado, incluindo atrasos anteriores. Valores desconhecidos ou estimados sinalizam previsão parcial.
+- Transferências entre contas registram dois lados, sem inflar receitas e despesas. Para corrigir uma transferência, exclua o par e registre novamente.
+- Lembretes de entradas são opcionais por aparelho. Notificações Android carregam projeções de 12 meses, renovadas ao abrir/salvar/sincronizar o app; não há geração infinita em segundo plano.
+- O histórico e backups anteriores são preservados. Atualize todos os aparelhos para a 0.4 antes de usar recorrências: versões antigas não conhecem as novas regras. Backup JSON guarda regras; CSV expande ocorrências até o fim do mês selecionado (e inclui registros efetivos já salvos), sem criar infinitas linhas futuras.
